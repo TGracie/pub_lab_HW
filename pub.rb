@@ -18,16 +18,17 @@ class Pub
   end
 
   def drink_bought(drink_being_bought) #Pub hasn't lost a drink yet!
-    @till += drink.price
+    @till += drink_being_bought.price
     return @drinks.delete(drink_being_bought)
   end
 
   def transaction(customer, drink_to_buy)
-    if customer.age < 18
-      return "Soft drinks only!"
+      if customer.age < 18
+        return "Soft drinks only!"
+      else
+        returned_drink = drink_bought(drink_to_buy)
+        customer.buy_drink(returned_drink)
     end
-    returned_drink = drink_bought(drink_to_buy)
-    customer.buy_drink(returned_drink)
   end
 
 end #class end

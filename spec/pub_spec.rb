@@ -42,7 +42,6 @@ def test_customer_buys_drink_pub_loses_drink_from_stock
   @pub.add_drink(@beer)
   @pub.drink_bought(@beer)
   assert_equal(0, @pub.stock)
-
 end
 
 def test_transaction_pub_loses_customer_gains
@@ -53,7 +52,11 @@ def test_transaction_pub_loses_customer_gains
 end
 
 def test_customer_is_underage
-  
+  @pub.add_drink(@beer)
+  child = Customer.new("Billy", 5, 16)
+  sale = @pub.transaction(child, @beer)
+  assert_equal(1, @pub.stock)
+  assert_equal("Soft drinks only!", sale)
 end
 
 end #Class end
