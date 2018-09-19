@@ -6,10 +6,13 @@ class Pub
   def initialize(name)
     @name = name
     @drinks = []
+    @food = []
     @till = 0
   end
 
-  def stock
+  # STOCK RELATED STUFF
+  # Drink stocking
+  def drink_stock
     @drinks.count()
   end
 
@@ -17,6 +20,17 @@ class Pub
     @drinks.push(drink)
   end
 
+  # Food Stocking
+  def food_stock
+    @food.count()
+  end
+
+  def add_food(food)
+    @food.push(food)
+  end
+
+  # PURCHASING
+  # Drink Sales
   def drink_bought(drink_being_bought) #Pub hasn't lost a drink yet!
     @till += drink_being_bought.price
     return @drinks.delete(drink_being_bought)
@@ -32,6 +46,12 @@ class Pub
         returned_drink = drink_bought(drink_to_buy)
         customer.buy_drink(returned_drink)
     end
+  end
+
+  # Food Sales
+  def food_bought(food_being_bought)
+    @til += food_being_bought.price
+    return @food.delete(food_being_bought)
   end
 
 end #class end

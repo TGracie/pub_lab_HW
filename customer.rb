@@ -8,6 +8,7 @@ class Customer
     @wallet = wallet
     @age = age
     @drinks = []
+    @stomach = []
     @drunkenness = 0
   end
 
@@ -23,6 +24,7 @@ end
 
 def drunk(drink)
   @drunkenness += drink.abv
+  # @drunkenness -= food.rejuv
 end
 
 def is_drunk?
@@ -32,5 +34,12 @@ def is_drunk?
     return false
   end
 end
+
+#advanced extensions
+  def buy_food(food)
+    @wallet -= food.price
+    @stomach << food if !food.nil?
+  end
+
 
 end #Class end

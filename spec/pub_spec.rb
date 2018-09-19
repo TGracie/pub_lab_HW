@@ -3,28 +3,38 @@ require("minitest/rg")
 require_relative("../drink.rb")
 require_relative("../pub.rb")
 require_relative("../customer.rb")
+require_relative("../food.rb")
 
 class PubTest < MiniTest::Test
 
   def setup
+    @pub = Pub.new("Chanter")
 
+    @customer1 = Customer.new("Thomas", 100, 24)
+
+    @beer = Drink.new("Session", 4, 6)
     @beer1 = Drink.new("Session", 4, 6)
     @beer2 = Drink.new("Session", 4, 6)
     @beer3 = Drink.new("Session", 4, 6)
     @beer4 = Drink.new("Session", 4, 6)
     @beer5 = Drink.new("Session", 4, 6)
-    @beer = Drink.new("Session", 4, 6)
-    # @martini = Drink.new("Martini", 6)
 
-    @customer1 = Customer.new("Thomas", 100, 24)
-
-    @pub = Pub.new("Chanter")
+    @pub.add_drink(@beer) # 6 beers
     @pub.add_drink(@beer1)
     @pub.add_drink(@beer2)
     @pub.add_drink(@beer3)
     @pub.add_drink(@beer4)
     @pub.add_drink(@beer5)
-    @pub.add_drink(@beer) # 6 beers
+
+    @burger = Food.new("Burger", 6, 3)
+    @chips = Food.new("Chips", 3, 5)
+    @pie = Food.new("Steak Pie", 5, 3)
+    @sunday_roast = Food.new("Sunday Roast", 12, 8)
+
+    @pub.add_food(@burger)
+    @pub.add_food(@chips)
+    @pub.add_food(@pie)
+    @pub.add_food(@sunday_roast)
 
   end
 
@@ -33,12 +43,19 @@ class PubTest < MiniTest::Test
   end
 
   def test_stock_count
-    assert_equal(6, @pub.stock)
+    assert_equal(6, @pub.drink_stock)
+    assert_equal(4, @pub.food_stock)
   end
 
   def test_add_drink_to_pub
     @pub.add_drink(@beer)
-    assert_equal(7, @pub.stock)
+    assert_equal(7, @pub.drink_stock)
+  end
+
+  def test_add_food_to_pub
+    mac_n_cheese = Food.new("Mac & Cheese", 3, 5)
+    @pub.add_food(mac_n_cheese)
+    assert_equal(5, @pub.food_stock)
   end
 
   def test_customer_buys_drink_pub_gets_money
@@ -52,7 +69,7 @@ class PubTest < MiniTest::Test
   def test_customer_buys_drink_pub_loses_drink_from_stock
 
     @pub.drink_bought(@beer1) # all beers were the same so all were being deleted?
-    assert_equal(5, @pub.stock)
+    assert_equal(5, @pub.drink_stock)
 
   end
 
@@ -67,7 +84,7 @@ class PubTest < MiniTest::Test
  #not required to check age, just a nice personal touch to check no beer was sold anyway
     child = Customer.new("Billy", 5, 16)
     sale = @pub.transaction(child, @beer)
-    assert_equal(6, @pub.stock)
+    assert_equal(6, @pub.drink_stock)
     assert_equal("Soft drinks only!", sale)
   end
 
