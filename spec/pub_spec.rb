@@ -9,6 +9,10 @@ class PubTest < MiniTest::Test
   def setup
 
     @beer1 = Drink.new("Session", 4, 6)
+    @beer2 = Drink.new("Session", 4, 6)
+    @beer3 = Drink.new("Session", 4, 6)
+    @beer4 = Drink.new("Session", 4, 6)
+    @beer5 = Drink.new("Session", 4, 6)
     @beer = Drink.new("Session", 4, 6)
     # @martini = Drink.new("Martini", 6)
 
@@ -16,10 +20,10 @@ class PubTest < MiniTest::Test
 
     @pub = Pub.new("Chanter")
     @pub.add_drink(@beer1)
-    @pub.add_drink(@beer)
-    @pub.add_drink(@beer)
-    @pub.add_drink(@beer)
-    @pub.add_drink(@beer)
+    @pub.add_drink(@beer2)
+    @pub.add_drink(@beer3)
+    @pub.add_drink(@beer4)
+    @pub.add_drink(@beer5)
     @pub.add_drink(@beer) # 6 beers
 
   end
@@ -46,7 +50,7 @@ class PubTest < MiniTest::Test
 #Pub hasn't actually lost a drink here, it's just taken in some money!
 
   def test_customer_buys_drink_pub_loses_drink_from_stock
-    p @pub.stock
+
     @pub.drink_bought(@beer1) # all beers were the same so all were being deleted?
     assert_equal(5, @pub.stock)
 
