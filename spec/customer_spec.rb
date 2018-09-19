@@ -14,6 +14,8 @@ class CustomerTest < MiniTest::Test
 
     @beer = Drink.new("Session", 4)
 
+    @pub = Pub.new("Chanter")
+
   end #setup end
 
   def test_customer_has_money
@@ -23,6 +25,11 @@ class CustomerTest < MiniTest::Test
   def test_customer_can_buy_drink
     @customer1.buy_drink(@beer)
     assert_equal(96, @customer1.wallet)
+  end
+
+  def test_customer_can_take_drink
+    @customer1.buy_drink(@beer)
+    assert_equal(1, @drinks.count)
   end
 
 end # class end

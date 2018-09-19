@@ -17,8 +17,14 @@ class Pub
     @drinks.push(drink)
   end
 
-  def drink_bought(customer, drink)
+  def drink_bought(drink) #Pub hasn't lost a drink yet!
     @till += drink.price
+    return @drinks.delete(drink)
+  end
+
+  def transaction(customer, drink_to_buy)
+    returned_drink = drink_bought(drink_to_buy)
+    customer.buy_drink(returned_drink)
   end
 
 end #class end
