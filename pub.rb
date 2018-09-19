@@ -36,7 +36,7 @@ class Pub
     return @drinks.delete(drink_being_bought)
   end
 
-  def transaction(customer, drink_to_buy)
+  def drink_transaction(customer, drink_to_buy)
       if customer.age < 18
         return "Soft drinks only!"
       elsif
@@ -50,8 +50,13 @@ class Pub
 
   # Food Sales
   def food_bought(food_being_bought)
-    @til += food_being_bought.price
+    @till += food_being_bought.price
     return @food.delete(food_being_bought)
+  end
+
+  def food_transaction(customer, food_to_buy)
+    returned_food = food_bought(food_to_buy)
+    customer.buy_food(returned_food)
   end
 
 end #class end

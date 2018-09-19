@@ -24,7 +24,6 @@ end
 
 def drunk(drink)
   @drunkenness += drink.abv
-  # @drunkenness -= food.rejuv
 end
 
 def is_drunk?
@@ -39,7 +38,15 @@ end
   def buy_food(food)
     @wallet -= food.price
     @stomach << food if !food.nil?
+    eaten(food)
   end
 
+  def food_count
+    @stomach.count
+  end
+
+  def eaten(food)
+    @drunkenness -= food.rejuv
+  end
 
 end #Class end

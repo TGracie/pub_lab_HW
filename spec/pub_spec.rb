@@ -67,23 +67,32 @@ class PubTest < MiniTest::Test
 #Pub hasn't actually lost a drink here, it's just taken in some money!
 
   def test_customer_buys_drink_pub_loses_drink_from_stock
-
     @pub.drink_bought(@beer1) # all beers were the same so all were being deleted?
     assert_equal(5, @pub.drink_stock)
-
   end
 
+    def test_customer_buys_food_pub_gets_money_and_loses_food
+      @pub.food_bought(@burger)
+      @customer1.buy_food(@burger)
+      assert_equal(6, @pub.till)
+      assert_equal(94, @customer1.wallet)
+      assert_equal(3, @pub.food_stock)
+    end
+
   def test_transaction_customer_gains_drink
+    @pub.drink_transaction(@customer1, @beer)
+    assert_equal(1, @customer1.drink_count)
+  end
 
-    @pub.transaction(@customer1, @beer)
-    assert_equal(1, @customer1.drinks.count)
-
+  def test_transaction_customer_gains_food
+    @pub.food_transaction(@customer1, @sunday_roast)
+    assert_equal(1, @customer1.food_count)
   end
 
   def test_customer_is_underage
  #not required to check age, just a nice personal touch to check no beer was sold anyway
     child = Customer.new("Billy", 5, 16)
-    sale = @pub.transaction(child, @beer)
+    sale = @pub.drink_transaction(child, @beer)
     assert_equal(6, @pub.drink_stock)
     assert_equal("Soft drinks only!", sale)
   end
@@ -94,7 +103,7 @@ class PubTest < MiniTest::Test
     blotto.buy_drink(@beer)
     blotto.buy_drink(@beer)
     blotto.buy_drink(@beer)
-    sale = @pub.transaction(blotto, @beer)
+    sale = @pub.drink_transaction(blotto, @beer)
     assert_equal("I'm cutting you off for a bit Frank", sale)
   end
 
@@ -103,8 +112,17 @@ class PubTest < MiniTest::Test
     frank = Customer.new("Frank", 1000, 56)
     frank.buy_drink(@beer)
     frank.buy_drink(@beer)
-    @pub.transaction(frank, @beer)
+    @pub.drink_transaction(frank, @beer)
     assert_equal(3, frank.drink_count)
+  end
+
+  def test_customer_has_food_and_drink_under_the_drunk_limit
+    @customer1.buy_drink(@beer1)
+    @customer1.buy_drink(@beer2)
+    @customer1.buy_food(@sunday_roast)
+    @pub.drink_transaction(@customer1, @beer)
+    assert_equal(10, @customer1.drunkenness)
+    #need to remember if under the limit the drink will still be sold to them!
   end
 
 end #Class end
