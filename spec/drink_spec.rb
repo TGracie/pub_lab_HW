@@ -7,7 +7,7 @@ class DrinkTest < MiniTest::Test
 
 
 def test_drink_has_name()
-  beer = Drink.new("First World Problems", 4)
+  beer = Drink.new("First World Problems", 4, 6)
   assert_equal("First World Problems", beer.name)
 end
 

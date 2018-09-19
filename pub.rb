@@ -25,6 +25,9 @@ class Pub
   def transaction(customer, drink_to_buy)
       if customer.age < 18
         return "Soft drinks only!"
+      elsif
+        customer.is_drunk?
+        return "I'm cutting you off for a bit #{customer.name}"
       else
         returned_drink = drink_bought(drink_to_buy)
         customer.buy_drink(returned_drink)
