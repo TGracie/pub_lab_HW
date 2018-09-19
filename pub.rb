@@ -17,4 +17,8 @@ class Pub
     @drinks.push(drink)
   end
 
+  def drink_bought(customer, drink)
+    @till += drink.price
+  end
+
 end #class end
