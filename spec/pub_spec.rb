@@ -19,7 +19,7 @@ class PubTest < MiniTest::Test
   end
 
   def test_stock_count
-    
+    assert_equal(0, @pub.stock)
   end
 
   # def test_add_drink_to_pub

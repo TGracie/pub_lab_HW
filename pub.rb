@@ -9,8 +9,8 @@ class Pub
     @till = 0
   end
 
-  def stock(pub)
-    return pub.drinks.count
+  def stock
+    @drinks.count()
   end
 
 end #class end
