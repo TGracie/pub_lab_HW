@@ -52,4 +52,8 @@ def test_transaction_pub_loses_customer_gains
   assert_equal(0, @pub.stock)
 end
 
+def test_customer_is_underage
+  
+end
+
 end #Class end

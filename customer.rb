@@ -15,6 +15,10 @@ def buy_drink(drink)
   @drinks << drink if !drink.nil?
 end
 
+def drink_count
+  @drinks.count
+end
+
 # def take_drink(drink)
 #
 # end
