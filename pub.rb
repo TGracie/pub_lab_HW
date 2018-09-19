@@ -13,4 +13,8 @@ class Pub
     @drinks.count()
   end
 
+  def add_drink(drink)
+    @drinks.push(drink)
+  end
+
 end #class end

@@ -22,10 +22,10 @@ class PubTest < MiniTest::Test
     assert_equal(0, @pub.stock)
   end
 
-  # def test_add_drink_to_pub
-  #   stock = @pub.drinks.count
-  #   assert_equal(1, stock)
-  #
-  # end
+  def test_add_drink_to_pub
+    @pub.add_drink(@beer)
+    assert_equal(1, @pub.stock)
+
+  end
 
 end #Class end
