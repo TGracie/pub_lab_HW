@@ -42,6 +42,8 @@ class Pub
       elsif
         customer.is_drunk?
         return "I'm cutting you off for a bit #{customer.name}"
+      elsif customer.wallet < drink_to_buy.price
+        return "No free drinks!"
       else
         returned_drink = drink_bought(drink_to_buy)
         customer.buy_drink(returned_drink)
@@ -55,8 +57,12 @@ class Pub
   end
 
   def food_transaction(customer, food_to_buy)
-    returned_food = food_bought(food_to_buy)
-    customer.buy_food(returned_food)
+    if customer.wallet < food_to_buy.price
+      return "No free food!"
+    else
+      returned_food = food_bought(food_to_buy)
+      customer.buy_food(returned_food)
+    end
   end
 
 end #class end

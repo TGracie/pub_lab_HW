@@ -12,6 +12,7 @@ class PubTest < MiniTest::Test
 
     @customer1 = Customer.new("Thomas", 100, 24)
 
+    # Drinks Created
     @beer = Drink.new("Session", 4, 6)
     @beer1 = Drink.new("Session", 4, 6)
     @beer2 = Drink.new("Session", 4, 6)
@@ -19,6 +20,7 @@ class PubTest < MiniTest::Test
     @beer4 = Drink.new("Session", 4, 6)
     @beer5 = Drink.new("Session", 4, 6)
 
+    # Drinks added to pub
     @pub.add_drink(@beer) # 6 beers
     @pub.add_drink(@beer1)
     @pub.add_drink(@beer2)
@@ -26,11 +28,13 @@ class PubTest < MiniTest::Test
     @pub.add_drink(@beer4)
     @pub.add_drink(@beer5)
 
+    # Food created
     @burger = Food.new("Burger", 6, 3)
     @chips = Food.new("Chips", 3, 5)
     @pie = Food.new("Steak Pie", 5, 3)
     @sunday_roast = Food.new("Sunday Roast", 12, 8)
 
+    # Food added
     @pub.add_food(@burger)
     @pub.add_food(@chips)
     @pub.add_food(@pie)
@@ -64,7 +68,7 @@ class PubTest < MiniTest::Test
     assert_equal(4, @pub.till)
     assert_equal(96, @customer1.wallet)
   end
-#Pub hasn't actually lost a drink here, it's just taken in some money!
+  #Pub hasn't actually lost a drink here, it's just taken in some money!
 
   def test_customer_buys_drink_pub_loses_drink_from_stock
     @pub.drink_bought(@beer1) # all beers were the same so all were being deleted?
@@ -99,10 +103,10 @@ class PubTest < MiniTest::Test
 
   def test_customer_is_smashed
     blotto = Customer.new("Frank", 100, 56)
-    blotto.buy_drink(@beer)
-    blotto.buy_drink(@beer)
-    blotto.buy_drink(@beer)
-    blotto.buy_drink(@beer)
+    blotto.buy_drink(@beer1)
+    blotto.buy_drink(@beer2)
+    blotto.buy_drink(@beer3)
+    blotto.buy_drink(@beer4)
     sale = @pub.drink_transaction(blotto, @beer)
     assert_equal("I'm cutting you off for a bit Frank", sale)
   end
@@ -123,6 +127,45 @@ class PubTest < MiniTest::Test
     @pub.drink_transaction(@customer1, @beer)
     assert_equal(10, @customer1.drunkenness)
     #need to remember if under the limit the drink will still be sold to them!
+  end
+
+  def test_customer_has_food_and_drink_over_the_drunk_limit
+    #Only buying one item of food to keep them over the limit
+    @customer1.buy_drink(@beer1)
+    @customer1.buy_drink(@beer2)
+    @customer1.buy_drink(@beer3)
+    @customer1.buy_drink(@beer4)
+    @customer1.buy_food(@burger)
+    sale = @pub.drink_transaction(@customer1, @beer)
+    assert_equal("I'm cutting you off for a bit Thomas", sale)
+
+  end
+
+  def test_customer_has_food_to_get_back_under_limit
+    #Now buying 2 items of food to get them back under limit
+    @customer1.buy_drink(@beer1) #6
+    @customer1.buy_drink(@beer2) #12
+    @customer1.buy_drink(@beer3) #18
+    @customer1.buy_drink(@beer4) #24
+    @customer1.buy_food(@burger) #21
+    @customer1.buy_food(@chips) #16
+    @pub.drink_transaction(@customer1, @beer) #22
+    assert_equal(22, @customer1.drunkenness)
+
+  end
+
+  def test_customer_has_no_money_for_drinks
+    geoff = Customer.new("Geoff", 3, 30)
+    geoff.buy_drink(@beer1)
+    sell = @pub.drink_transaction(geoff, @beer)
+    assert_equal("No free drinks!", sell)
+  end
+
+  def test_customer_has_no_money_for_food
+    geoff = Customer.new("Geoff", 3, 30)
+    geoff.buy_food(@sunday_roast)
+    sell = @pub.food_transaction(geoff, @sunday_roast)
+    assert_equal("No free food!", sell)
   end
 
 end #Class end
